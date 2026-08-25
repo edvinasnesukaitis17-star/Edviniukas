@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edviniukas.lt - Skaitmeninės Paslaugos</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
+</head>
+<body>
+
+  <!-- NAVIGACIJA -->
+  <header class="navbar">
+    <div class="logo">
+      <div class="logo-icon-bg"><i class="fa-solid fa-bolt logo-icon"></i></div>
+      <span>Edviniukas<span class="logo-dot">.lt</span></span>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#pagrindinis" class="nav-item active">Pradžia</a>
+      
+      <div class="dropdown">
+        <button type="button" class="dropdown-btn">TikTok <i class="fa-solid fa-chevron-down dropdown-arrow"></i></button>
+        <div class="dropdown-content">
+          <a href="#" onclick="openProductModal('tiktok', 'Peržiūros')"><i class="fa-solid fa-eye"></i> TikTok Peržiūros</a>
+          <a href="#" onclick="openProductModal('tiktok', 'Sekėjai')"><i class="fa-solid fa-user-plus"></i> TikTok Sekėjai</a>
+          <a href="#" onclick="openProductModal('tiktok', 'Patiktukai')"><i class="fa-solid fa-heart"></i> TikTok Patiktukai</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button type="button" class="dropdown-btn">Instagramas <i class="fa-solid fa-chevron-down dropdown-arrow"></i></button>
+        <div class="dropdown-content">
+          <a href="#" onclick="openProductModal('instagram', 'Sekėjai')"><i class="fa-solid fa-user-plus"></i> Instagram Sekėjai</a>
+          <a href="#" onclick="openProductModal('instagram', 'Patiktukai')"><i class="fa-solid fa-heart"></i> Instagram Patiktukai</a>
+        </div>
+      </div>
+
+      <a href="#" class="nav-item" onclick="showNotification('Dienoraštis bus pasiekiamas netrukus!')">Dienoraštis</a>
+      <a href="#" class="nav-item" onclick="openContactModal(event)">Susisiekite su mumis</a>
+    </nav>
+
+    <div class="nav-actions">
+      <!-- ADMIN MYGTUKAS VIRŠUJE -->
+      <button type="button" id="admin-nav-btn" class="admin-btn" onclick="checkAdminAccess()">
+        <i class="fa-solid fa-crown"></i> <span>Admin Meniu</span>
+      </button>
+
+      <button type="button" class="login-link" onclick="openAuthModal('login')">
+        <i class="fa-solid fa-right-to-bracket"></i> <span>Prisijungti</span>
+      </button>
+      <button type="button" class="register-btn" onclick="openAuthModal('register')">
+        <i class="fa-solid fa-user-plus"></i> <span>Registruotis</span>
+      </button>
+      
+      <button type="button" class="cart-btn" onclick="toggleCart()">
+        <i class="fa-solid fa-cart-shopping"></i> <span>Krepšelis</span>
+        <span id="cart-count" class="cart-badge">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO BANERIS -->
+  <section class="hero" id="pagrindinis">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <span class="badge"><i class="fa-solid fa-shield-halved"></i> Patikimas & Greitas Pardavėjas</span>
+      <h1>Aukščiausios kokybės <span>skaitmeninės paslaugos</span></h1>
+      <p>Atskleiskite savo socialinių tinklų potencialą ir įsigykite paslaugų greitai bei saugiai.</p>
+    </div>
+  </section>
+
+  <!-- PASLAUGŲ KORTELĖS -->
+  <main class="container">
+    <div class="section-title">
+      <h2>Mūsų Pasiūlymai</h2>
+    </div>
+    
+    <div class="shop-grid">
+      <div class="card popular" onclick="openProductModal('spotify')">
+        <div class="card-tag"><i class="fa-solid fa-fire"></i> Populiariausias</div>
+        <div class="card-icon spotify-icon"><i class="fa-brands fa-spotify"></i></div>
+        <h3>Spotify Premium</h3>
+        <p class="desc">Aukščiausios kokybės muzikos prenumerata be jokių reklamų.</p>
+        <div class="card-footer">
+          <button type="button" class="buy-btn" onclick="event.stopPropagation(); openProductModal('spotify')">Pirkti paslaugą <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="card" onclick="openProductModal('tiktok')">
+        <div class="card-icon tt-icon"><i class="fa-brands fa-tiktok"></i></div>
+        <h3>TikTok Paslaugos</h3>
+        <p class="desc">Peržiūros, sekėjai ir patiktukai jūsų TikTok profiliui.</p>
+        <div class="card-footer">
+          <button type="button" class="buy-btn" onclick="event.stopPropagation(); openProductModal('tiktok')">Pirkti paslaugą <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="card" onclick="openProductModal('instagram')">
+        <div class="card-icon ig-icon"><i class="fa-brands fa-instagram"></i></div>
+        <h3>Instagram Paslaugos</h3>
+        <p class="desc">Aukštos kokybės Instagram sekėjai bei patiktukai.</p>
+        <div class="card-footer">
+          <button type="button" class="buy-btn" onclick="event.stopPropagation(); openProductModal('instagram')">Pirkti paslaugą <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="card" onclick="openProductModal('scripts')">
+        <div class="card-icon dev-icon"><i class="fa-solid fa-code"></i></div>
+        <h3>Unikalūs Skriptai</h3>
+        <p class="desc">Profesionalus FiveM sistemų programavimas ir klaidų taisymas.</p>
+        <div class="card-footer">
+          <button type="button" class="buy-btn" onclick="event.stopPropagation(); openProductModal('scripts')">Pirkti paslaugą <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ADMIN VALDYMO MODAL -->
+  <div id="admin-modal" class="pay-modal">
+    <div class="pay-modal-content wide-modal">
+      <span class="close-btn" onclick="closeAdminModal()">&times;</span>
+      <div class="auth-header">
+        <i class="fa-solid fa-crown auth-icon" style="color: #f59e0b;"></i>
+        <h3>Administratoriaus Valdymas</h3>
+        <p class="modal-subtext">Prisijungta kaip: <strong style="color:#f59e0b;">edvinasnesukaitis17@gmail.com</strong></p>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <h4 style="color:#a78bfa; margin-bottom: 10px;"><i class="fa-solid fa-users"></i> Užregistruoti Vartotojai:</h4>
+        <div id="admin-users-list" style="background:#040814; border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:12px; max-height:220px; overflow-y:auto;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIRKIMO MODAL -->
+  <div id="product-modal" class="pay-modal">
+    <div class="pay-modal-content wide-modal">
+      <span class="close-btn" onclick="closeProductModal()">&times;</span>
+      <div class="modal-header-info">
+        <h3 id="modal-title" style="margin-bottom:15px; color:#a78bfa;">Paslaugos Pasirinkimas</h3>
+      </div>
+
+      <div class="modal-body-form">
+        <div class="input-group">
+          <label for="service-type-select"><i class="fa-solid fa-sliders"></i> Pasirinkite paslaugos tipą:</label>
+          <select id="service-type-select" class="input-field" onchange="updateOptions()"></select>
+        </div>
+
+        <div class="input-group" style="margin-top:15px;">
+          <label><i class="fa-solid fa-cubes"></i> Pasirinkite kiekį / paketą:</label>
+          <div id="package-options" class="options-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:5px;"></div>
+        </div>
+
+        <div class="input-group" style="margin-top:15px;">
+          <label id="target-link-label" for="target-link"><i class="fa-solid fa-link"></i> Įveskite Nuorodą / Vartotojo vardą:</label>
+          <input type="text" id="target-link" placeholder="Įklijuokite čia..." class="input-field">
+        </div>
+
+        <div class="price-summary" style="margin-top:20px; text-align:right; font-size:1.1rem;">
+          <span>Galutinė kaina: </span>
+          <strong id="selected-price" style="color:#10b981; font-size:1.3rem;">0.00 €</strong>
+        </div>
+
+        <div class="modal-actions" style="margin-top:15px;">
+          <button type="button" class="buy-btn full-btn" style="width:100%; justify-content:center;" onclick="addSelectedToCart()">
+            <i class="fa-solid fa-cart-plus"></i> Įdėti į krepšelį
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRISIJUNGIMO / REGISTRACIJOS MODAL -->
+  <div id="auth-modal" class="pay-modal">
+    <div class="pay-modal-content">
+      <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+      
+      <div id="login-form-box">
+        <div class="auth-header">
+          <i class="fa-solid fa-circle-user auth-icon" style="font-size:2rem; color:#7c3aed; margin-bottom:10px;"></i>
+          <h3>Prisijungimas</h3>
+        </div>
+        <form onsubmit="handleAuthSubmit(event, 'login')">
+          <div class="input-group">
+            <label for="login-email"><i class="fa-solid fa-envelope"></i> El. Paštas:</label>
+            <input type="email" id="login-email" required class="input-field" placeholder="edvinasnesukaitis17@gmail.com">
+          </div>
+          <div class="input-group">
+            <label for="login-password"><i class="fa-solid fa-lock"></i> Slaptažodis:</label>
+            <input type="password" id="login-password" required class="input-field" placeholder="••••••••">
+          </div>
+          <button type="submit" class="buy-btn full-btn" style="width:100%; margin-top:15px; justify-content:center;">Prisijungti</button>
+        </form>
+        <p class="auth-switch" style="margin-top:10px; text-align:center; font-size:0.85rem; color:#9ca3af;">Neturite paskyros? <a href="#" onclick="switchAuthTab('register')" style="color:#7c3aed;">Registruokitės</a></p>
+      </div>
+
+      <div id="register-form-box" style="display: none;">
+        <div class="auth-header">
+          <i class="fa-solid fa-user-plus auth-icon" style="font-size:2rem; color:#7c3aed; margin-bottom:10px;"></i>
+          <h3>Registracija</h3>
+        </div>
+        <form onsubmit="handleAuthSubmit(event, 'register')">
+          <div class="input-group">
+            <label for="register-username"><i class="fa-solid fa-user"></i> Vartotojo vardas:</label>
+            <input type="text" id="register-username" required class="input-field" placeholder="Vardas">
+          </div>
+          <div class="input-group">
+            <label for="register-email"><i class="fa-solid fa-envelope"></i> El. Paštas:</label>
+            <input type="email" id="register-email" required class="input-field" placeholder="pavyzdys@gmail.com">
+          </div>
+          <div class="input-group">
+            <label for="register-password"><i class="fa-solid fa-lock"></i> Slaptažodis:</label>
+            <input type="password" id="register-password" required class="input-field" placeholder="••••••••">
+          </div>
+          <button type="submit" class="register-btn full-btn" style="width:100%; margin-top:15px; justify-content:center;">Sukurti paskyrą</button>
+        </form>
+        <p class="auth-switch" style="margin-top:10px; text-align:center; font-size:0.85rem; color:#9ca3af;">Jau turite paskyrą? <a href="#" onclick="switchAuthTab('login')" style="color:#7c3aed;">Prisijunkite</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- KONTAKTAI -->
+  <div id="contact-modal" class="pay-modal">
+    <div class="pay-modal-content">
+      <span class="close-btn" onclick="closeContactModal()">&times;</span>
+      <div class="auth-header">
+        <i class="fa-solid fa-paper-plane auth-icon" style="font-size:2rem; color:#7c3aed; margin-bottom:10px;"></i>
+        <h3>Susisiekite su mumis</h3>
+      </div>
+      <p style="text-align:center; color:#a1a1aa; margin:15px 0;">Mūsų el. paštas: <strong style="color:#fff;">enetauzinot@gmail.com</strong></p>
+      <a href="mailto:enetauzinot@gmail.com" class="buy-btn full-btn" style="text-align: center; text-decoration: none; display: flex; justify-content:center;">Rašyti laišką</a>
+    </div>
+  </div>
+
+  <!-- KREPŠELIS -->
+  <div id="cart-drawer" class="cart-drawer">
+    <div class="cart-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <h2>Jūsų krepšelis</h2>
+      <button type="button" class="cart-close-btn" onclick="toggleCart()" style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+    </div>
+    <div id="cart-items" class="cart-body" style="flex:1; overflow-y:auto;"></div>
+    <div class="cart-footer" style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
+      <div class="total-row" style="display:flex; justify-content:space-between; margin-bottom:15px;"><span>IŠ VISO:</span><span id="cart-total" style="color:#10b981; font-weight:bold;">0,00 €</span></div>
+      <button type="button" class="btn-checkout buy-btn" style="width:100%; justify-content:center;" onclick="openPaymentModal()">ATSISKAITYTI</button>
+    </div>
+  </div>
+  <div id="cart-overlay" class="cart-overlay" onclick="toggleCart()"></div>
+
+  <!-- PAYPAL MOKĖJIMAS -->
+  <div id="pay-modal" class="pay-modal">
+    <div class="pay-modal-content">
+      <span class="close-btn" onclick="closePaymentModal()">&times;</span>
+      <h3 style="text-align:center; margin-bottom:15px;">Atsiskaitymas per PayPal</h3>
+      <div id="paypal-button-container"></div>
+    </div>
+  </div>
+
+  <!-- TOAST PRANEŠIMAS -->
+  <div id="toast-notification" class="toast-modal">
+    <div class="toast-content">
+      <i class="fa-solid fa-circle-check toast-icon" id="toast-icon" style="color:#10b981;"></i>
+      <span id="toast-message">Atlikta sėkmingai!</span>
+    </div>
+  </div>
+
+  <footer style="text-align:center; padding:20px; border-top:1px solid rgba(255,255,255,0.05); margin-top:40px; color:#6b7280; font-size:0.85rem;">
+    <p>&copy; 2026 Edviniukas.lt. Visos teisės saugomos.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
