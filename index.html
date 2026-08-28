@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edviniukas.lt - Paslaugų Centras</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: #0b0e14;
+      color: #ffffff;
+      line-height: 1.6;
+    }
+
+    /* HEADER & NAV BAR */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 8%;
+      background: rgba(11, 14, 20, 0.95);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    nav a, .dropdown-btn {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s;
+      cursor: pointer;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    nav a:hover, nav a.active, .dropdown:hover .dropdown-btn {
+      color: #ffffff;
+    }
+
+    /* DROPDOWN MENIU */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #131822;
+      min-width: 180px;
+      box-shadow: 0px 8px 24px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 8px 0;
+      z-index: 200;
+      margin-top: 5px;
+    }
+
+    .dropdown-content a {
+      color: #94a3b8;
+      padding: 10px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 14px;
+    }
+
+    .dropdown-content a:hover {
+      background-color: rgba(168, 85, 247, 0.15);
+      color: #a855f7;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 40px 20px 10px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .category-filters {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 25px 0 35px;
+    }
+
+    .filter-btn {
+      background: #131822;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #94a3b8;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* GRID & CARDS */
+    .container {
+      max-width: 1250px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #131822;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(168, 85, 247, 0.4);
+    }
+
+    .card-icon { font-size: 32px; margin-bottom: 10px; }
+    .card h3 { font-size: 18px; margin-bottom: 6px; }
+    .card-price { color: #a855f7; font-weight: 800; font-size: 16px; margin-bottom: 10px; }
+    .card p { color: #94a3b8; font-size: 13px; margin-bottom: 16px; }
+
+    .btn-buy {
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      color: #fff;
+      border: none;
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* MODAL (UŽSAKYMAS) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal {
+      background: #131822;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      width: 90%;
+      max-width: 450px;
+      padding: 25px;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px; right: 15px;
+      background: none; border: none;
+      color: #fff; font-size: 20px; cursor: pointer;
+    }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      background: #0b0e14;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .btn-pay {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .btn-paypal { background: #ffc439; color: #003087; }
+
+    /* STILINGAS ĮSPĖJIMO LANGAS (CUSTOM ALERT) */
+    .alert-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .alert-box {
+      background: #181d28;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 25px 30px;
+      max-width: 380px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .alert-box p {
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .alert-box button {
+      background: #7c2d12;
+      border: 1.5px solid #ea580c;
+      color: #ffffff;
+      padding: 6px 28px;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .alert-box button:hover {
+      background: #9a3412;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #64748b;
+      font-size: 13px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER MEUNU -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      Edviniukas.lt
+    </div>
+
+    <nav>
+      <a href="#" class="active">Pradžia</a>
+      
+      <div class="dropdown">
+        <button class="dropdown-btn">TikTok <span>∨</span></button>
+        <div class="dropdown-content">
+          <a href="#" onclick="filterCat('boost', document.querySelectorAll('.filter-btn')[4])">Sekėjai ir Likes</a>
+          <a href="#" onclick="filterCat('recovery', document.querySelectorAll('.filter-btn')[1])">Paskyros Pagalba</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="dropdown-btn">Instagramas <span>∨</span></button>
+        <div class="dropdown-content">
+          <a href="#" onclick="filterCat('boost', document.querySelectorAll('.filter-btn')[4])">Sekėjai ir Likes</a>
+          <a href="#" onclick="filterCat('recovery', document.querySelectorAll('.filter-btn')[1])">Paskyros Pagalba</a>
+        </div>
+      </div>
+
+      <a href="#">Dienoraštis</a>
+      <a href="#contact">Susisiekite su mumis</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Paslaugų Užsakymo Centras</h1>
+    <p>Apmokėjimai priimami per PayPal (enetauzinot@gmail.com).</p>
+
+    <div class="category-filters">
+      <button class="filter-btn active" onclick="filterCat('all', this)">Visi Pasirinkimai</button>
+      <button class="filter-btn" onclick="filterCat('recovery', this)">🔑 Slaptažodžiai / Paskyros</button>
+      <button class="filter-btn" onclick="filterCat('subs', this)">🍿 Netflix ir Prenumeratos</button>
+      <button class="filter-btn" onclick="filterCat('games', this)">🎮 Žaidimai ir Valiutos</button>
+      <button class="filter-btn" onclick="filterCat('boost', this)">🚀 Soc. Tinklų Auginimas</button>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="grid" id="services-grid">
+      
+      <!-- KATEGORIJA: SLAPTAŽODŽIAI IR PASKYROS -->
+      <div class="card item-recovery">
+        <div class="card-icon">👻</div>
+        <h3>Snapchat Atkūrimo Pagalba</h3>
+        <div class="card-price">Nuo 30.00 €</div>
+        <p>Konsultacija ir pagalba atstatant pamirštus Snapchat paskyros duomenis.</p>
+        <button class="btn-buy" onclick="openOrder('Snapchat Atkūrimo Pagalba')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-recovery">
+        <div class="card-icon">🎵</div>
+        <h3>TikTok Paskyros Pagalba</h3>
+        <div class="card-price">Nuo 30.00 €</div>
+        <p>Pagalba sprendžiant prisijungimo ir saugumo problemas TikTok paskyroje.</p>
+        <button class="btn-buy" onclick="openOrder('TikTok Paskyros Pagalba')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-recovery">
+        <div class="card-icon">📸</div>
+        <h3>Instagram Atkūrimo Pagalba</h3>
+        <div class="card-price">Nuo 35.00 €</div>
+        <p>Prarastų slaptažodžių atstatymas ir pagalba su 2FA dviejų veiksnių apsauga.</p>
+        <button class="btn-buy" onclick="openOrder('Instagram Atkūrimo Pagalba')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-recovery">
+        <div class="card-icon">📘</div>
+        <h3>Facebook Paskyros Atstatymas</h3>
+        <div class="card-price">Nuo 30.00 €</div>
+        <p>Slaptažodžio keitimo ir prisijungimo teisių susigrąžinimo konsultacija.</p>
+        <button class="btn-buy" onclick="openOrder('Facebook Atkūrimo Pagalba')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-recovery">
+        <div class="card-icon">📧</div>
+        <h3>Google / Gmail Paskyrų Pagalba</h3>
+        <div class="card-price">Nuo 25.00 €</div>
+        <p>Pagalba atgaunant prieigą prie užblokuotų ar pamirštų Google paskyrų.</p>
+        <button class="btn-buy" onclick="openOrder('Google Gmail Atkūrimas')">Užsakyti &rarr;</button>
+      </div>
+
+      <!-- KATEGORIJA: PRENUMERATOS -->
+      <div class="card item-subs">
+        <div class="card-icon">🍿</div>
+        <h3>Netflix Premium 4K (6 Mėn)</h3>
+        <div class="card-price">20.00 €</div>
+        <p>Privatus profilis Ultra HD kokybe 6 mėnesių laikotarpui.</p>
+        <button class="btn-buy" onclick="openOrder('Netflix Premium 4K')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-subs">
+        <div class="card-icon">🎧</div>
+        <h3>Spotify Premium (1 Metai)</h3>
+        <div class="card-price">25.00 €</div>
+        <p>Metinė Spotify Premium prenumerata be jokių reklamos pertraukų.</p>
+        <button class="btn-buy" onclick="openOrder('Spotify Premium')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-subs">
+        <div class="card-icon">🚀</div>
+        <h3>Discord Nitro (1 Metai)</h3>
+        <div class="card-price">35.00 €</div>
+        <p>Pilna Discord Nitro prenumerata su serverio boostais metams.</p>
+        <button class="btn-buy" onclick="openOrder('Discord Nitro Metams')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-subs">
+        <div class="card-icon">📺</div>
+        <h3>YouTube Premium (1 Metai)</h3>
+        <div class="card-price">22.00 €</div>
+        <p>Grokite muziką fone ir žiūrėkite vaizdo įrašus be jokių reklamų.</p>
+        <button class="btn-buy" onclick="openOrder('YouTube Premium')">Užsakyti &rarr;</button>
+      </div>
+
+      <!-- KATEGORIJA: ŽAIDIMAI -->
+      <div class="card item-games">
+        <div class="card-icon">🚗</div>
+        <h3>GTA V Modded Paskyra</h3>
+        <div class="card-price">25.00 €</div>
+        <p>Paskyra su pinigų ir lygio bonusais paruošta žaidimui.</p>
+        <button class="btn-buy" onclick="openOrder('GTA V Modded Paskyra')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-games">
+        <div class="card-icon">⛏️</div>
+        <h3>13,500 Fortnite V-Bucks</h3>
+        <div class="card-price">20.00 €</div>
+        <p>V-Bucks papildymas tavo Epic Games paskyrai per kelias minutes.</p>
+        <button class="btn-buy" onclick="openOrder('13,500 Fortnite V-Bucks')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-games">
+        <div class="card-icon">🤖</div>
+        <h3>Roblox Robux (10,000 Robux)</h3>
+        <div class="card-price">30.00 €</div>
+        <p>Pigūs Robux papildymai jūsų Roblox profiliui.</p>
+        <button class="btn-buy" onclick="openOrder('10,000 Robux')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-games">
+        <div class="card-icon">🎯</div>
+        <h3>CS2 Prime Paskyros</h3>
+        <div class="card-price">18.00 €</div>
+        <p>Counter-Strike 2 paskyros su Prime statusu ir atrakintu Matchmaking.</p>
+        <button class="btn-buy" onclick="openOrder('CS2 Prime Paskyra')">Užsakyti &rarr;</button>
+      </div>
+
+      <!-- KATEGORIJA: SOC. TINKLŲ AUGINIMAS -->
+      <div class="card item-boost">
+        <div class="card-icon">🔥</div>
+        <h3>TikTok 10,000 Sekėjų</h3>
+        <div class="card-price">15.00 €</div>
+        <p>Greitas ir saugus TikTok sekėjų skaičiaus padidinimas.</p>
+        <button class="btn-buy" onclick="openOrder('TikTok 10k Sekėjų')">Užsakyti &rarr;</button>
+      </div>
+
+      <div class="card item-boost">
+        <div class="card-icon">❤️</div>
+        <h3>Instagram 5,000 Patiktukų</h3>
+        <div class="card-price">10.00 €</div>
+        <p>Patiktukai (Likes) jūsų pasirinktiems Instagram įrašams.</p>
+        <button class="btn-buy" onclick="openOrder('Instagram 5k Likes')">Užsakyti &rarr;</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- UŽSAKYMO MODALAS -->
+  <div class="modal-overlay" id="orderModal">
+    <div class="modal">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <h3 style="margin-bottom: 5px;">Užsakyti Paslaugą</h3>
+      <p style="color: #a855f7; font-weight: bold; margin-bottom: 15px;" id="selected-service-title"></p>
+
+      <div class="form-group">
+        <label>Tavo Kontaktas (Discord / Instagram / Telegram):</label>
+        <input type="text" id="cust-contact" placeholder="Pvz.: @Edvinas bendravimui">
+      </div>
+
+      <div class="form-group">
+        <label>El. Paštas (Sąskaitai):</label>
+        <input type="email" id="cust-email" placeholder="tavo@pastas.lt">
+      </div>
+
+      <div class="form-group">
+        <label>Užsakymo informacija / Pastaba:</label>
+        <textarea id="cust-notes" rows="3" placeholder="Įrašyk vartotojo vardą arba papildomą informaciją..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Nuolaidos kodas:</label>
+        <input type="text" id="cust-promo" placeholder="Pvz., Edviniukas ontop">
+      </div>
+
+      <p style="font-size: 11px; color: #94a3b8; margin-top: 10px;">Apmokėjimas nukreipiamas į PayPal: <b>enetauzinot@gmail.com</b></p>
+      
+      <button class="btn-pay btn-paypal" onclick="submitOrder('paypal')">Apmokėti su PayPal</button>
+    </div>
+  </div>
+
+  <!-- CUSTOM ALERT PRANEŠIMO LANGELIS -->
+  <div class="alert-overlay" id="customAlert">
+    <div class="alert-box">
+      <p id="alertMessage">Prašome įvesti savo kontaktą ir el. paštą!</p>
+      <button onclick="closeAlert()">OK</button>
+    </div>
+  </div>
+
+  <footer id="contact">
+    © 2026 Edviniukas.lt | PayPal gavėjas: enetauzinot@gmail.com
+  </footer>
+
+  <script>
+    const DISCORD_WEBHOOK_URL = "ČIA_ĮKLIJUOK_SAVO_DISCORD_WEBHOOK_URL";
+    const PAYPAL_ACCOUNT = "enetauzinot@gmail.com";
+
+    let activeService = "";
+
+    function showAlert(msg) {
+      document.getElementById('alertMessage').innerText = msg;
+      document.getElementById('customAlert').style.display = 'flex';
+    }
+
+    function closeAlert() {
+      document.getElementById('customAlert').style.display = 'none';
+    }
+
+    function filterCat(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if(btn) btn.classList.add('active');
+
+      document.querySelectorAll('.card').forEach(card => {
+        if (cat === 'all' || card.classList.contains('item-' + cat)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function openOrder(serviceName) {
+      activeService = serviceName;
+      document.getElementById('selected-service-title').innerText = serviceName;
+      document.getElementById('orderModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('orderModal').style.display = 'none';
+    }
+
+    async function submitOrder(paymentMethod) {
+      const contact = document.getElementById('cust-contact').value.trim();
+      const email = document.getElementById('cust-email').value.trim();
+      const notes = document.getElementById('cust-notes').value.trim();
+      const promo = document.getElementById('cust-promo').value.trim();
+
+      if (!contact || !email) {
+        showAlert("Prašome įvesti savo kontaktą ir el. paštą!");
+        return;
+      }
+
+      const discordPayload = {
+        embeds: [{
+          title: "🛒 NAUJAS UŽSAKYMAS!",
+          color: 11020535,
+          fields: [
+            { name: "Paslauga", value: activeService, inline: true },
+            { name: "Mokėjimo būdas", value: paymentMethod.toUpperCase(), inline: true },
+            { name: "Kliento Kontaktas", value: contact },
+            { name: "El. Paštas", value: email },
+            { name: "Pastabos / Duomenys", value: notes || "Nėra" },
+            { name: "Nuolaidos kodas", value: promo || "Netaikyta" }
+          ],
+          footer: { text: "Edviniukas.lt Sistema" },
+          timestamp: new Date()
+        }]
+      };
+
+      try {
+        if (DISCORD_WEBHOOK_URL && !DISCORD_WEBHOOK_URL.includes("ČIA_ĮKLIJUOK")) {
+          await fetch(DISCORD_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(discordPayload)
+          });
+        }
+      } catch (err) {
+        console.error("Klaida siunčiant į Discord:", err);
+      }
+
+      const itemDesc = `${activeService} | Kontaktas: ${contact} | Paštas: ${email}`;
+      window.location.href = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_ACCOUNT)}&item_name=${encodeURIComponent(itemDesc)}&currency_code=EUR`;
+    }
+  </script>
+</body>
+</html>
